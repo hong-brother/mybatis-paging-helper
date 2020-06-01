@@ -1,13 +1,11 @@
 package com.hsnam.spring.paging.helper.dao;
 
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hsnam.spring.paging.helper.model.CityModel;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
 
 @Repository
 public class CityDao {
@@ -17,8 +15,15 @@ public class CityDao {
     @Autowired
     private SqlSession sqlSession;
 
-    public List<CityModel> selectCityList(){
-        return sqlSession.selectList(namespace+".selectCityList");
+    /**
+     * 페이지 조회
+     * @param pageNo 페이지 번호
+     * @param pageSize 화면에 보여줄 게시글 갯수
+     * @return
+     */
+    public PageInfo<CityModel> selectCityList(int pageNo, int pageSize){
+        PageHelper.startPage(pageNo, pageSize);
+        return PageInfo.of(sqlSession.selectList(namespace+".selectCityList"));
     }
 
 
